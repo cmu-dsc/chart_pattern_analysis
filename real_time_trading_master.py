@@ -94,10 +94,8 @@ def get_init_tasks(task_list_fname, num_data_files, num_params, pct_of_tasks_to_
     offset = initial_idx * num_columns * float32_size
     shape = (num_tasks_to_get, num_columns)
     fp = np.memmap(task_list_fname, dtype='float32', mode='r+', offset=offset, shape=shape)
-    print('fp_im', fp[:])
     #Change to ones to indicate running
     fp[:, 5] = 1
-    print('fp_init', fp[:])
     return fp, num_tot_tasks, num_tasks_per_partition, num_tasks_to_get, initial_idx
 
 def get_new_tasks(task_list_fname, start_row, num_tasks_to_get, num_columns, num_tot_tasks, initial_idx):
@@ -124,6 +122,32 @@ def get_new_tasks(task_list_fname, start_row, num_tasks_to_get, num_columns, num
         #return fp[non_running_task_idxs,:], False
 
 def run_main():
+    '''
+    wall_time: float
+        Max amount of time (in seconds) for program execution before termination. This is 
+        only used if time_limit is True. Progress is saved as you go along instead of 
+        only printed at the end.
+
+    time_limit: bool
+        Whether or not to have a time limit on execution.
+
+    data_dir: str
+        path to data files
+
+    task_list_prefix: str
+        the part of the task list path up until the extension.
+
+    task_list_fname: str
+        path of the task list
+
+    num_params: int
+        number of unique parameters in the task list file
+
+    num_columns: number of columns in the task list file (the file is a numpy matrix)
+
+    pct_of_tasks_to_get: number
+        percent (0-100) of the total number of tasks to get at a time by a single rank
+    '''
     wall_time = 10400.0
     time_limit = False
     data_dir = '/export/home/math/trose/data/stocks/tasks/npz'
@@ -139,7 +163,6 @@ def run_main():
 
     start_time_get_fp = time_utils.gtime()
     fp, num_tot_tasks, num_tasks_per_partition, num_tasks_to_get, initial_idx = get_init_tasks(task_list_fname, num_data_files, num_params, pct_of_tasks_to_get, num_columns)
-    print('fp', fp[:])
 
     non_running_task_idxs = [i for i in range(fp.shape[0])]
     yesterdays_data_file = ' '
