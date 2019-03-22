@@ -4,6 +4,19 @@ sys.path.append('/export/home/math/trose/python_utils')
 import file_utils
 
 def main():
+    '''
+    input_fname: str
+        path of task list data file (a numpy memory map (which is essentially an matrix))
+
+    output_fname: str
+       path of outputted data file
+
+    data_dir: str
+        path to directory containing data files (stored as .npz files (which are essentially a list of matrices, one for each stock symbol (ticker))).
+
+    Purpose: Write the file (which is is a numpy mem map which is a matrix) which has all parameter sets requested for each day of data. It
+        includes the day, the parameters, the state initialized to 0 (meaning untouched), and the returns initialized to 0.
+    '''
     input_fname = 'method_3_params_8.csv'
     output_fname = 'method_3_task_list.dat'
     data_dir = '/export/home/math/trose/data/stocks/tasks/npz'
