@@ -8,6 +8,21 @@ def get_pct_of_tasks_done(fp, num_rows):
     return num_finished_tasks / float(num_rows)
 
 def main():
+    '''
+    input_fname: str
+        path of task list data file (a numpy memory map (which is essentially an matrix))
+
+    num_columns: int
+        number of columns of the matrix in input_fname
+
+    num_params: int
+        number of unique parameter sets of the matrix in input_fname
+
+    data_dir: str
+        path to directory containing data files (stored as .npz files (which are essentially a list of matrices, one for each stock symbol (ticker))).
+
+    Purpose: print the current state of the current state of the task list.
+    '''
     input_fname = 'method_3_task_list.dat'
     num_columns = 7
     num_params = 8
