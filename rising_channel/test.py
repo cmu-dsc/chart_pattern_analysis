@@ -56,23 +56,23 @@ def find_matching_charts(startP, peak, bottom, rollAvg, params, tib, i, method=4
     return potential_buy
 
 
-def vmap(data):
+def vwap(data):
     volume = data.volume
     price = data.price
-    return data.assign(vmap = (volume * price).cumsum() / volume.cumsum())
+    return data.assign(vwap = np.dot(volume, price) / volume.sum())
 
 
 # load and preprocess data
 def load_data(path, symbol):
     data_dir = ''
     today_single_data_file = np.load(data_dir + '/1_18_2018.npz')
-    index = pd.date_range('1/18/2018 09:30:00', '1/18/2018 16:30:00', freq= 'S')
+    index = pd.date_range('1/18/2018 09:30:00', '1/18/2018 16:00:00', freq= 'S')
     today_price_file = pd.DataFrame(today_single_data_file[symbols[symbol]],
                                     index = index[:len(today_single_data_file[symbols[symbols]][:,0])],
                                     columns= ['price', 'volume'])
-    # convert accumulative volume to volumn, get vmap, resample
-    today_price_file['volume'] = today_price_file['volume'].diff(periods=1)
-    today_price_file = today_price_file.groupby(today_price_file.index.date, group_keys=False).apply(vmap)
+    # convert cumulative volume to get vwap, resample
+    today_price_file['volume'] = today_price_file['volume'].diff(periods=1).dropna()
+    today_price_file = today_price_file.groupby(today_price_file.index.date, group_keys=False).apply(vwap)
     aggAvg = today_price_file.resample('30S').mean()
     aggAvg.to_csv('test_data.csv')
     return
