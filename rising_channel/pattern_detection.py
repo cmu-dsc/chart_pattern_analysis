@@ -114,7 +114,7 @@ def find_channels(maxes, mins, tol, poke_out_tol):
         every pair of vectors in positive_max_vecs and positive_min_vecs. This 
         function will give the pairwise distance for every pair in crit_vecs,
         but we will extract out the pairs of vectors between positive_max_vecs 
-        and positive_max_vecs only later. While this function computes unnecessary
+        and positive_min_vecs only later. While this function computes unnecessary
         pairwise distances (those between positive_max_vecs and positive_max_vecs
         or between positive_min_vecs and positive_min_vecs), pdist is much faster
         than other methods (even those which only calculate the desired output).
